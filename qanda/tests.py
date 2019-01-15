@@ -4,6 +4,7 @@ from django.test import TestCase, RequestFactory
 
 from qanda.factories import QuestionFactory
 from qanda.views import DailyQuestionListView
+from user.factories import UserFactory
 
 QUESTION_CREATED_STRFTIME = "%Y-%m-%d %H:%M"
 
@@ -41,3 +42,43 @@ class TestDailyQuestionListView(TestCase):
                 date=question.created.strftime(QUESTION_CREATED_STRFTIME)
             )
             self.assertInHTML(needle, rendered_content)
+
+
+class TestQuestionDetailView(TestCase):
+    QUESTION_DETAIL_SNIPPET = """
+    <div class="question">
+        <div class="meta col-sm-12">
+            <h1>{title}</h1>
+            Asked by {user} on {date}
+        </div>
+        <div class="body col-sm-12">
+            <p>{body}</p>
+        </div>
+    </div>
+    """
+    NO_ANSWERS_SNIPPET = """
+        <li class="answer">No answers yet!</li>
+    """
+    LOGIN_TO_POST_ANSWERS = 'Login to post answers'
+
+    def test_logged_in_user_can_post_answers(self):
+        question = QuestionFactory()
+
+        self.assertTrue(self.client.login(
+            username=question.user.username,
+            password=UserFactory.password
+        ))
+        response = self.client.get('/q/{}'.format(question.id))
+        rendered_content = response.rendered_content
+        self.assertEqual(200, response.status_code)
+        self.assertInHTML(self.NO_ANSWERS_SNIPPET, rendered_content)
+
+        template_names = [t.name for t in response.templates]
+        self.assertIn('qanda/common/post_answer.html', template_names)
+
+        question_needle = self.QUESTION_DETAIL_SNIPPET.format(
+            title=question.title,
+            user=question.user.username,
+            date=question.created.strftime(QUESTION_CREATED_STRFTIME),
+            body=QuestionFactory.question)
+        self.assertInHTML(question_needle, rendered_content)
