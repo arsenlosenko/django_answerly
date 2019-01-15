@@ -1,6 +1,15 @@
 from django.conf import settings
 from django.db import models
 from django.urls.base import reverse
+from django.contrib.postgres.search import SearchVector
+
+
+class QuestionManager(models.Manager):
+    def find_questions(self, query):
+        qs = self.get_queryset()
+        return qs.annotate(
+            search=SearchVector('title', 'question')
+        ).filter(search=query)
 
 
 class Question(models.Model):
@@ -9,6 +18,7 @@ class Question(models.Model):
     user = models.ForeignKey(to=settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
+    objects = QuestionManager()
 
     def __str__(self):
         return self.title

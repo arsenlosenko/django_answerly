@@ -2,7 +2,8 @@ from django.urls import path
 
 from qanda.views import (AskQuestionView, QuestionDetailView,
                          CreateAnswerView, UpdateAnswerAcceptanceView,
-                         DailyQuestionListView, TodayQuestionListView)
+                         DailyQuestionListView, TodayQuestionListView,
+                         SearchView)
 
 app_name = 'qanda'
 urlpatterns = [
@@ -17,6 +18,10 @@ urlpatterns = [
     path('q/<int:pk>/answer',
          CreateAnswerView.as_view(),
          name="answer-question"),
+
+    path('q/search',
+         SearchView.as_view(),
+         name='question-search'),
 
     path('a/<int:pk>/accept',
          UpdateAnswerAcceptanceView.as_view(),

@@ -4,7 +4,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http.response import HttpResponseBadRequest
 from django.http import HttpResponseRedirect
 from django.views.generic import (CreateView, DetailView,
-                                  UpdateView, DayArchiveView, RedirectView)
+                                  UpdateView, DayArchiveView,
+                                  RedirectView, TemplateView)
 
 from qanda.forms import QuestionForm, AnswerForm, AnswerAcceptanceForm
 from qanda.models import Question, Answer
@@ -115,3 +116,15 @@ class TodayQuestionListView(RedirectView):
                 'year': today.year
             }
         )
+
+
+class SearchView(TemplateView):
+    template_name = 'qanda/search.html'
+
+    def get_context_data(self, **kwargs):
+        query = self.request.GET.get('q', None)
+        ctx = super().get_context_data(query=query, **kwargs)
+        if query:
+            results = Question.objects.find_questions(query)
+            ctx['hits'] = results
+        return ctx

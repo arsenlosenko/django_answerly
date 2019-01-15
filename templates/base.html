@@ -19,6 +19,14 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'qanda:index' %}">Today's questions</a>
                 </li>
+                <li class="nav-item">
+                    <form class="form-inline"
+                          action="{% url 'qanda:question-search' %}"
+                          method="get">
+                        <input type="search" class="form-control mr-2" placeholder="Search" name="q">
+                        <button type="submit" class="btn btn-outline-primary my-2 my-sm-0">Search</button>
+                    </form>
+                </li>
                 {% if user.is_authenticated %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'user:logout' %}">Logout</a>
