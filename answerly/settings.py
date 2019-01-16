@@ -149,3 +149,5 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_URL = 'user:login'
 LOGIN_REDIRECT_URL = 'qanda:index'
 LOGOUT_REDIRECT_URL = 'qanda:index'
+
+CHROMEDRIVER = os.path.join(BASE_DIR, '../chromedriver')

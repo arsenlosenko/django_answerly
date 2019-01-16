@@ -29,7 +29,7 @@
             <div class="col-sm-9 col-md-10">
                 <div class="body">{{ answer.answer| markdownify }}</div>
                 <div class="meta font-weight-light">
-                    Answered by {{ answer.user }} on {{answer.created|date:'Y-m-d'}}{{answer.created|date:'H:i'}}
+                    Answered by {{ answer.user }} on {{answer.created|date:'Y-m-d'}} {{answer.created|date:'H:i'}}
                 </div>
             </div>
         </li>
