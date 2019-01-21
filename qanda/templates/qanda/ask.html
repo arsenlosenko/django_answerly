@@ -9,6 +9,7 @@
 <div class="col-md-12">
     <h1>Ask a question</h1>
     {% if preview %}
+    <div class="container"> 
         <div class="card question-preview">
             <div class="card-header">
                 Question Preview 
@@ -18,6 +19,7 @@
                 {{ preview.question| markdownify }}
             </div>
         </div>
+    </div>
     {% endif %}
     <form method="post">
         {{ form| crispy }}

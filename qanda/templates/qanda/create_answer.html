@@ -4,10 +4,12 @@
 {% block body %}
     {% include 'qanda/common/display_question.html' %}
         {% if preview %}
-        <div class="card question-preview">
-            <div class="card-header">Answer preview</div>
-            <div class="card-body">
-                {{ preview|markdownify }}
+        <div class="container">
+            <div class="card question-preview">
+                <div class="card-header">Answer preview</div>
+                <div class="card-body">
+                    {{ preview|markdownify }}
+                </div>
             </div>
         </div>
         {% endif %}

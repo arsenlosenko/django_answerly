@@ -5,32 +5,46 @@
 {% block body %}
 <div class="col-sm-12">
     <h1>Highest Voted Questions of {{ day }}</h1>
-    <ul>
+    <div class="list-group mb-2">
         {% for question in object_list %}
-        <li>
-            {{ question.votes }}
-            <a href="{{ question.get_absolute_url }}">
-                {{ question }}
+            <a href="{{ question.get_absolute_url }}"
+               class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">{{ question }}</h5>
+                <small>{{ question.votes }}</small>
+            </div>
+            <p class="mb-1">
+            {{ question.question }}
+            </p>
+            <small>
+                by
+                {{ question.user }}
+                on {{ question.created|date:'Y-m-d'}} {{question.created|date:'H:i'}}
+            </small>
             </a>
-            by
-            {{ question.user }}
-            on {{ question.created|date:'Y-m-d'}} {{question.created|date:'H:i'}}
-        </li>
-        {% empty %}
-        <li>No questons for today</li>
+            {% empty %}
+                <span>No questons for today</span>
         {% endfor %}
-    </ul>
-    <div>
-        {% if previous_day %}
-        <a href="{% url 'qanda:daily-questions' year=previous_day.year month=previous_day.month day=previous_day.day %}">
-            << Previous Day
-        </a>
-        {% endif %}
-        {% if next_day %}
-        <a href="{% url 'qanda:daily-questions' year=next_day.year month=next_day.month day=next_day.day %}">
-            Next Day >>
-        </a>
-        {% endif %}
     </div>
+<div>
+<ul class="pagination">
+    {% if previous_day %}
+    <li class="page-item">
+        <a class="page-link"
+            href="{% url 'qanda:daily-questions' year=previous_day.year month=previous_day.month day=previous_day.day %}">
+            Previous Day
+        </a>
+    </li>
+    {% endif %}
+    {% if next_day %}
+    <li class="page-item">
+        <a class="page-link" 
+            href="{% url 'qanda:daily-questions' year=next_day.year month=next_day.month day=next_day.day %}">
+            Next Day
+        </a>
+    </li>
+    {% endif %}
+</ul>
+</div>
 </div>
 {% endblock %}
