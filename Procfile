@@ -1,1 +1,1 @@
-web: gunicorn answerly.wsgi --log-file -
+web: python manage.py collectstatic; gunicorn answerly.wsgi --log-file -
